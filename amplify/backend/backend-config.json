@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"smartphotos1c0a4316": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}

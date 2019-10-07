@@ -1,0 +1,19 @@
+{
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "smart-photos-master-20191007124554-authRole",
+            "UnauthRoleArn": "arn:aws:iam::394166008023:role/smart-photos-master-20191007124554-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::394166008023:role/smart-photos-master-20191007124554-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "smart-photos-master-20191007124554-deployment",
+            "UnauthRoleName": "smart-photos-master-20191007124554-unauthRole",
+            "StackName": "smart-photos-master-20191007124554",
+            "StackId": "arn:aws:cloudformation:us-east-1:394166008023:stack/smart-photos-master-20191007124554/351797d0-e8a4-11e9-9ce4-0a437bda7b86"
+        },
+        "categories": {
+            "auth": {
+                "smartphotos1c0a4316": {}
+            }
+        }
+    }
+}
