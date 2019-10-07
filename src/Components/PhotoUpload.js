@@ -38,23 +38,21 @@ export default function PhotoUpload() {
   const uploadFile = async (file) => {
     const user = await Auth.currentAuthenticatedUser();
     const filename = `${uuid()}-${file.name}`;
-    const result = await Storage.put(
+    await Storage.put(
       filename,
       file,
       {
-        customPrefix: { public: 'uploads/' },
+        customPrefix: { public: 'public/uploads/' },
         metadata: { owner: user.username }
       }
     );
-    const upload = await API.graphql(graphqlOperation(PutPhoto, {bucket: bucket, key: `uploads/${filename}`, user: user.username, region: region}));
-    console.log('result', result);
-    console.log(upload);
+    await API.graphql(graphqlOperation(PutPhoto, {bucket: bucket, key: `uploads/${filename}`, user: user.username, region: region}));
   }
 
   const onChange = async (e) => {
     setUploadStatus('Uploading...');
     let files = [];
-    for (var i = 0; i < e.target.files.length; i++) {
+    for (let i = 0; i < e.target.files.length; i++) {
       files.push(e.target.files.item(i));
     }
     await Promise.all(files.map(f => uploadFile(f)));
@@ -62,7 +60,7 @@ export default function PhotoUpload() {
   }
 
   return (
-    <div >
+    <div style={{ marginTop: '40px' }}>
       <Input
         accept="image/*"
         id="raised-button-file"
