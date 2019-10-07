@@ -1,6 +1,6 @@
 {
     "identityPoolName": "smartphotos1c0a4316_identitypool_1c0a4316",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "smartp1c0a4316",
     "userPoolName": "smartphotos1c0a4316_userpool_1c0a4316",
     "autoVerifiedAttributes": [
