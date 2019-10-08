@@ -1,0 +1,15 @@
+{
+    "resourceName": "smartphotosidentifylabels",
+    "identifyPolicyName": "identifyPolicy15b57b7c",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "adminAuthProtected": "DISALLOW",
+    "adminGuestProtected": "DISALLOW",
+    "identifyType": "identifyLabels",
+    "type": "ALL",
+    "access": "authAndGuest"
+}

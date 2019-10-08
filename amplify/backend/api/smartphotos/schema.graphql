@@ -4,4 +4,7 @@ type Photo @model @auth(rules: [{allow: owner}]) {
   bucket: String!
   key: String!
   region: String!
+  labels: [String]
+  createdAt: AWSTimestamp
+  safe: Boolean
 }

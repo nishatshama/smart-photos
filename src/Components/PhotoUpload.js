@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Auth, Storage, API, graphqlOperation } from 'aws-amplify';
+import { Auth, Storage, API, graphqlOperation, Predictions } from 'aws-amplify';
 import {v4 as uuid} from 'uuid';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PutPhoto = `mutation PutPhoto($bucket: String!, $key: String!, $user: String!, $region: String!) {
-  createPhoto(input: {bucket: $bucket, key: $key, username: $user, region: $region}){
+const PutPhoto = `mutation PutPhoto($bucket: String!, $key: String!, $user: String!, $region: String!, $createdAt: AWSTimestamp, $safe: Boolean, $labels: [String]) {
+  createPhoto(input: {bucket: $bucket, key: $key, username: $user, region: $region, safe: $safe, createdAt: $createdAt, labels: $labels}){
     bucket
     key
   }
@@ -46,7 +46,17 @@ export default function PhotoUpload() {
         metadata: { owner: user.username }
       }
     );
-    await API.graphql(graphqlOperation(PutPhoto, {bucket: bucket, key: `uploads/${filename}`, user: user.username, region: region}));
+
+    const { labels, unsafe } = await Predictions.identify({
+      labels: {
+        source: {
+          file,
+        },
+        type: "ALL"
+      }
+    })
+         
+    await API.graphql(graphqlOperation(PutPhoto, {bucket: bucket, key: `uploads/${filename}`, user: user.username, region: region, labels: labels.map(label => label.name), safe: unsafe == 'NO' ? true : false, createdAt: Date.now() }));
   }
 
   const onChange = async (e) => {

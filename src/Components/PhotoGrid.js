@@ -31,9 +31,10 @@ export default function PhotoGrid(props) {
   const classes = useStyles();
 
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12}>
-        <Grid container justify="center" spacing={spacing}>
+    <div style={{ margin: '50px'}}>
+      <Grid container className={classes.root}>
+        <Grid item xs={12}>
+          <Grid container justify="center" spacing={spacing}>
           {props.photos.map(value => (
             <Grid key={value} item>
               <Card
@@ -45,8 +46,9 @@ export default function PhotoGrid(props) {
               </Card>
             </Grid>
           ))}
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }

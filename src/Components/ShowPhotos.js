@@ -3,7 +3,7 @@ import { Auth, Storage, API, graphqlOperation } from 'aws-amplify'
 import PhotoGrid from './PhotoGrid';
 
 const ListPhotos = `query ListPhotos($username: String!) {
-  listPhotos (filter: {username: {eq: $username}}){
+  listPhotos (limit: 1000, filter: {username: {eq: $username}}){
     items {
       id
       key
@@ -26,7 +26,7 @@ export default function ShowPhotos() {
   }
 
   return (
-    <div style={{ width: '100%', padding: '40px'}}>
+    <div>
       { userPhotos.length > 0 ? 
         <PhotoGrid photos={ userPhotos }/> : <span/>
       } 
