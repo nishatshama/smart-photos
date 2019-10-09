@@ -1,55 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Auth, Storage, API, graphqlOperation } from 'aws-amplify';
 
 import Typography from '@material-ui/core/Typography';
 
 import PhotoGrid from './PhotoGrid';
 import { AppContext } from '../reducer/reducer';
-import { SET_USER_PHOTO_DATA } from '../reducer/types';
-
-
-const ListPhotos = `query ListPhotos($username: String!) {
-  listPhotos (limit: 1000, filter: {username: {eq: $username}}){
-    items {
-      id
-      key
-      labels
-      safe
-    }
-  }
-}`
-;
 
 export default function ShowPhotos() {
-  const [userPhotoDataReceived, setUserPhotoDataReceived] = useState(false);
-  const { AppDataReducer, dispatch } = useContext(AppContext);
-
-  useEffect(() => {
-    const getPhotos = async() => {
-      const userPhotoData = await getUserPhotoData();
-      dispatch({ type: SET_USER_PHOTO_DATA, userPhotoData: userPhotoData });
-      setUserPhotoDataReceived(true);
-    };
-    getPhotos();
-  }, []);
-
-  const getUserPhotoData = async () => {
-    const user = await Auth.currentAuthenticatedUser();
-    const { data } = await API.graphql(graphqlOperation(ListPhotos, { username: user.username }));
-    return await Promise.all(data.listPhotos.items.map(async(item) => {
-      item.s3 = await Storage.get(item.key);
-      return item;
-    }));
-  }
+  const { AppDataReducer } = useContext(AppContext);
 
   return (
     <div>
-      { userPhotoDataReceived ?
-        <span>
-          <Typography variant="h4" style={{ paddingLeft: '80px'}}>All Photos</Typography>
-          <PhotoGrid userPhotoData={ AppDataReducer.userPhotoData }/> 
-        </span> : <span/>
-      } 
+      <span>
+        <Typography variant="h4" style={{ paddingLeft: '80px' }}>All Photos</Typography>
+        <PhotoGrid userPhotoData={AppDataReducer.userPhotoData} />
+      </span>
     </div>
   );
 }
