@@ -34,6 +34,7 @@ const PutPhoto = `mutation PutPhoto($bucket: String!, $key: String!, $user: Stri
 export default function PhotoUpload() {
   const classes = useStyles();
   const [uploadStatus, setUploadStatus] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
   const uploadFile = async (file) => {
     const user = await Auth.currentAuthenticatedUser();
@@ -54,19 +55,31 @@ export default function PhotoUpload() {
         },
         type: "ALL"
       }
-    })
+    });
+
+    console.log(labels);
          
-    await API.graphql(graphqlOperation(PutPhoto, {bucket: bucket, key: `uploads/${filename}`, user: user.username, region: region, labels: labels.map(label => label.name), safe: unsafe == 'NO' ? true : false, createdAt: Date.now() }));
+    await API.graphql(graphqlOperation(PutPhoto,
+      { bucket: bucket,
+        key: `uploads/${filename}`,
+        user: user.username,
+        region: region,
+        labels: labels.map(label => label.name),
+        safe: unsafe === 'NO' ? true : false,
+        createdAt: Date.now()
+      }));
   }
 
   const onChange = async (e) => {
     setUploadStatus('Uploading...');
+    setIsUploading(true);
     let files = [];
     for (let i = 0; i < e.target.files.length; i++) {
       files.push(e.target.files.item(i));
     }
     await Promise.all(files.map(f => uploadFile(f)));
     setUploadStatus('Upload Completed!');
+    setIsUploading(false);
   }
 
   return (
@@ -80,7 +93,13 @@ export default function PhotoUpload() {
         onChange={onChange}
       />
       <label htmlFor="raised-button-file">
-        <Button raised component="span" variant="contained" className={classes.button}>
+        <Button
+          raised
+          component="span"
+          variant="contained"
+          className={ classes.button }
+          disabled={ isUploading }
+        >
           <AddToPhotosIcon /> &nbsp; Upload Photos
         </Button>
       </label>
