@@ -36,12 +36,12 @@ export default function PhotoGrid(props) {
         <Grid item xs={12}>
           <Grid container justify="center" spacing={spacing}>
           {props.photos.map(value => (
-            <Grid key={value} item>
+            <Grid key={value.id} item>
               <Card
                 className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image={value}
+                  image={value.s3}
                 />
               </Card>
             </Grid>
