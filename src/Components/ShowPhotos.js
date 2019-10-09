@@ -23,7 +23,7 @@ const ListPhotos = `query ListPhotos($username: String!) {
 
 export default function ShowPhotos() {
   const [userPhotoDataReceived, setUserPhotoDataReceived] = useState(false);
-  const { dispatch } = useContext(AppContext);
+  const { AppDataReducer, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const getPhotos = async() => {
@@ -48,7 +48,7 @@ export default function ShowPhotos() {
       { userPhotoDataReceived ?
         <span>
           <Typography variant="h4" style={{ paddingLeft: '80px'}}>All Photos</Typography>
-          <PhotoGrid /> 
+          <PhotoGrid userPhotoData={ AppDataReducer.userPhotoData }/> 
         </span> : <span/>
       } 
     </div>
