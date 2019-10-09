@@ -73,11 +73,11 @@ function App() {
           <main className={classes.content}>
             <div className={classes.toolbar} />
             { AppDataReducer.searchString.length > 0 ?
-              <SearchResult/> : (
-                AppDataReducer.sidebarValue === 'All Photos' ?
+              <SearchResult/> : <span/>
+            }
+            { AppDataReducer.sidebarValue === 'All Photos' ?
                 <ShowPhotos /> : (
                   AppDataReducer.sidebarValue === 'Categories' ? <span/> : <span/>)
-              )
             }
           </main> : <span/>
         }
