@@ -2,7 +2,8 @@ import React from 'react';
 
 import {
   SET_USER,
-  SET_USER_PHOTO_DATA
+  SET_USER_PHOTO_DATA,
+  SET_SIDEBAR_VALUE
 } from './types';
 
 export const AppContext = React.createContext(null);
@@ -10,6 +11,7 @@ export const AppContext = React.createContext(null);
 export const initialState = {
   user: null,
   userPhotoData: '',
+  sidebarValue: 'All Photos',
 };
 
 export function reducer(state, action) {
@@ -23,6 +25,11 @@ export function reducer(state, action) {
       return {
         ...state,
         userPhotoData: action.userPhotoData
+      };
+    case SET_SIDEBAR_VALUE:
+      return {
+        ...state,
+        sidebarValue: action.sidebarValue
       };
     default:
       return initialState;

@@ -37,7 +37,9 @@ function App() {
         <Sidebar />
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <ShowPhotos />
+          { AppDataReducer.sidebarValue === 'All Photos' ?
+            <ShowPhotos /> : (AppDataReducer.sidebarValue === 'Categories' ? <span/> : <span/>)
+          }  
         </main>
       </div>
     </AppContext.Provider>

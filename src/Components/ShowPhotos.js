@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Auth, Storage, API, graphqlOperation } from 'aws-amplify';
 
 import PhotoGrid from './PhotoGrid';
-import SectionContainer from './SectionContainer';
 import { AppContext } from '../reducer/reducer';
 import { SET_USER_PHOTO_DATA } from '../reducer/types';
 
@@ -44,10 +43,7 @@ export default function ShowPhotos() {
   return (
     <div>
       { userPhotoDataReceived ?
-        <span>
-          <SectionContainer />
-          <PhotoGrid />
-        </span> : <span/>
+        <PhotoGrid /> : <span/>
       } 
     </div>
   );

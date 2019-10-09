@@ -15,6 +15,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import logo from '../resources/logo.png';
 import PhotoUpload from './PhotoUpload';
+import { AppContext } from '../reducer/reducer';
+import { SET_SIDEBAR_VALUE } from '../reducer/types';
 
 const drawerWidth = 240;
 
@@ -35,6 +37,7 @@ function ResponsiveDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { dispatch } = React.useContext(AppContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -47,7 +50,7 @@ function ResponsiveDrawer(props) {
       <PhotoUpload/>
       <List>
         {['All Photos', 'Categories', 'Scan'].map((text, index) => (
-          <ListItem button key={text}>
+          <ListItem button key={text} onClick={() => dispatch({ type: SET_SIDEBAR_VALUE, sidebarValue: text })}>
             <ListItemIcon>{index === 0 ? <WallpaperIcon /> : (index === 1? <CategoryIcon />: <ScannerIcon />)}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
