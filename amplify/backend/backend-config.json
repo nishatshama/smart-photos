@@ -51,6 +51,12 @@
 			"service": "Rekognition",
 			"dependsOn": [],
 			"identifyType": "identifyLabels"
+		},
+		"smartphotosidentifytext": {
+			"providerPlugin": "awscloudformation",
+			"service": "RekognitionAndTextract",
+			"dependsOn": [],
+			"identifyType": "identifyText"
 		}
 	}
 }

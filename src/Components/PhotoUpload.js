@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PutPhoto = `mutation PutPhoto($bucket: String!, $key: String!, $user: String!, $region: String!, $createdAt: AWSTimestamp, $safe: Boolean, $labels: [String]) {
-  createPhoto(input: {bucket: $bucket, key: $key, username: $user, region: $region, safe: $safe, createdAt: $createdAt, labels: $labels}){
+const PutPhoto = `mutation PutPhoto($bucket: String!, $key: String!, $user: String!, $region: String!, $createdAt: AWSTimestamp, $safe: Boolean, $labels: [String], $text: String) {
+  createPhoto(input: {bucket: $bucket, key: $key, username: $user, region: $region, safe: $safe, createdAt: $createdAt, labels: $labels, text: $text}){
     bucket
     key
     labels
@@ -59,8 +59,15 @@ export default function PhotoUpload() {
         type: "ALL"
       }
     });
-
-    console.log(labels);
+    
+    const { text } = await Predictions.identify({
+      text: {
+        source: {
+          file,
+        },
+        format: "PLAIN",
+      }
+    });
          
     await API.graphql(graphqlOperation(PutPhoto,
       { bucket: bucket,
@@ -69,7 +76,8 @@ export default function PhotoUpload() {
         region: region,
         labels: labels.map(label => label.name),
         safe: unsafe === 'NO' ? true : false,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        text: text.fullText
       }));
   }
 
@@ -106,7 +114,7 @@ export default function PhotoUpload() {
           <AddToPhotosIcon /> &nbsp; Upload Photos
         </Button>
       </label>
-      <span>{uploadStatus}</span>
+      <p style={{ paddingLeft: '5px' }}>{uploadStatus}</p>
     </div>
   )
 }

@@ -7,4 +7,5 @@ type Photo @model @auth(rules: [{allow: owner}]) {
   labels: [String]
   createdAt: AWSTimestamp
   safe: Boolean
+  text: String
 }
