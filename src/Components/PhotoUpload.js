@@ -77,7 +77,7 @@ export default function PhotoUpload() {
         labels: labels.map(label => label.name),
         safe: unsafe === 'NO' ? true : false,
         createdAt: Date.now(),
-        text: text.fullText
+        text: text.fullText.length > 0 ? text.fullText : null
       }));
   }
 
