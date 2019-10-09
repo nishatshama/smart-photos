@@ -6,21 +6,39 @@ import { withAuthenticator } from 'aws-amplify-react';
 import { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 
 import './App.css';
-import PhotoUpload from './Components/PhotoUpload';
 import ShowPhotos from './Components/ShowPhotos';
+import Sidebar from './Components/Sidebar';
 import { initialState, reducer, AppContext } from './reducer/reducer';
+import { makeStyles } from '@material-ui/core/styles';
 
 Amplify.configure(aws_exports);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: 240,
+  },
+  content: {
+    flexGrow: 1,
+  },
+}));
+
 function App() {
   const [AppDataReducer, dispatch] = useReducer(reducer, initialState);
+  const classes = useStyles();
 
   return (
     <AppContext.Provider value={{ AppDataReducer, dispatch }}>
-      <div className="App">
-        <PhotoUpload />
-        <ShowPhotos />
+      <div className={classes.root}>
+        <Sidebar />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <ShowPhotos />
+        </main>
       </div>
     </AppContext.Provider>
   );
