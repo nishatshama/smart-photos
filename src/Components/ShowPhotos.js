@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Auth, Storage, API, graphqlOperation } from 'aws-amplify';
 
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 
 import PhotoGrid from './PhotoGrid';
 import { AppContext } from '../reducer/reducer';

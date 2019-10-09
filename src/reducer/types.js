@@ -1,3 +1,4 @@
 export const SET_USER_PHOTO_DATA = 'SET_USER_PHOTO_DATA';
 export const SET_USER = 'SET_USER';
 export const SET_SIDEBAR_VALUE = 'SET_SIDEBAR_VALUE';
+export const SET_SEARCH_STRING = 'SET_SEARCH_STRING';

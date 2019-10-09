@@ -3,7 +3,8 @@ import React from 'react';
 import {
   SET_USER,
   SET_USER_PHOTO_DATA,
-  SET_SIDEBAR_VALUE
+  SET_SIDEBAR_VALUE,
+  SET_SEARCH_STRING
 } from './types';
 
 export const AppContext = React.createContext(null);
@@ -12,6 +13,7 @@ export const initialState = {
   user: null,
   userPhotoData: '',
   sidebarValue: 'All Photos',
+  searchString: ''
 };
 
 export function reducer(state, action) {
@@ -30,6 +32,11 @@ export function reducer(state, action) {
       return {
         ...state,
         sidebarValue: action.sidebarValue
+      };
+    case SET_SEARCH_STRING:
+      return {
+        ...state,
+        searchString: action.searchString
       };
     default:
       return initialState;
