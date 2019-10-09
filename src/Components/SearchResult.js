@@ -1,14 +1,19 @@
 import React from 'react';
 
-export default function SearchResult(props) {
+import Typography from '@material-ui/core/Typography';
+
+import PhotoGrid from './PhotoGrid';
+import { AppContext } from '../reducer/reducer';
+
+export default function SearchResult() {
+  const { AppDataReducer } = React.useContext(AppContext);
+
   return (
     <div>
-      { userPhotoDataReceived ?
-        <span>
-          <Typography variant="h4" style={{ paddingLeft: '80px'}}>All Photos</Typography>
-          <PhotoGrid userPhotoData={ AppDataReducer.userPhotoData }/> 
-        </span> : <span/>
-      } 
+      <span>
+        <Typography variant="h4" style={{ paddingLeft: '80px' }}>Search Result</Typography>
+        <PhotoGrid />
+      </span> : <span />
     </div>
   );
 }

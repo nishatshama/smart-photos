@@ -31,23 +31,25 @@ export default function PhotoGrid(props) {
 
   return (
     <div style={{ margin: '50px'}}>
-      <Grid container className={classes.root}>
-        <Grid item xs={12}>
-          <Grid container justify="center" spacing={2}>
-          {props.userPhotoData.map(value => (
-            <Grid key={value.id} item>
-              <Card
-                className={classes.card}>
-                <CardMedia
-                  className={classes.media}
-                  image={value.s3}
-                />
-              </Card>
+      { props.userPhotoData ? 
+        <Grid container className={classes.root}>
+          <Grid item xs={12}>
+            <Grid container justify="center" spacing={2}>
+            {props.userPhotoData.map(value => (
+              <Grid key={value.id} item>
+                <Card
+                  className={classes.card}>
+                  <CardMedia
+                    className={classes.media}
+                    image={value.s3}
+                  />
+                </Card>
+              </Grid>
+            ))}
             </Grid>
-          ))}
           </Grid>
-        </Grid>
-      </Grid>
+        </Grid> : <span/> 
+      }
     </div>
   );
 }

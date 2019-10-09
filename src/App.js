@@ -12,6 +12,7 @@ import Sidebar from './Components/Sidebar';
 import { initialState, reducer, AppContext } from './reducer/reducer';
 import { makeStyles } from '@material-ui/core/styles';
 import { SET_USER_PHOTO_DATA } from './reducer/types';
+import SearchResult from './Components/SearchResult';
 
 Amplify.configure(aws_exports);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
@@ -71,9 +72,13 @@ function App() {
         { userPhotoDataReceived ? 
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            { AppDataReducer.sidebarValue === 'All Photos' ?
-              <ShowPhotos /> : (AppDataReducer.sidebarValue === 'Categories' ? <span/> : <span/>)
-            }  
+            { AppDataReducer.searchString.length > 0 ?
+              <SearchResult/> : (
+                AppDataReducer.sidebarValue === 'All Photos' ?
+                <ShowPhotos /> : (
+                  AppDataReducer.sidebarValue === 'Categories' ? <span/> : <span/>)
+              )
+            }
           </main> : <span/>
         }
       </div>
