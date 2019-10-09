@@ -27,6 +27,9 @@ const PutPhoto = `mutation PutPhoto($bucket: String!, $key: String!, $user: Stri
   createPhoto(input: {bucket: $bucket, key: $key, username: $user, region: $region, safe: $safe, createdAt: $createdAt, labels: $labels}){
     bucket
     key
+    labels
+    createdAt
+    safe
   }
 }`
 ;

@@ -1,28 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Auth, Storage, API, graphqlOperation } from 'aws-amplify'
+
 import PhotoGrid from './PhotoGrid';
+import { AppContext } from '../reducer/reducer';
+import { SET_USER_PHOTO_DATA } from '../reducer/types';
+
 
 const ListPhotos = `query ListPhotos($username: String!) {
   listPhotos (limit: 1000, filter: {username: {eq: $username}}){
     items {
       id
       key
+      labels
+      safe
     }
   }
 }`
 ;
 
 export default function ShowPhotos() {
-  const [userPhotos, setUserPhotos] = useState([]);
+  const [userPhotoData, setUserPhotoData] = useState([]);
+  const { dispatch } = useContext(AppContext);
+
   useEffect(() => {
     const getPhotos = async() => {
-      const photos = await getUserPhotos();
-      setUserPhotos(photos);
+      const userPhotoData = await getUserPhotoData();
+      dispatch({ type: SET_USER_PHOTO_DATA, userPhotoData: userPhotoData });
+      setUserPhotoData(userPhotoData);
     };
     getPhotos();
   }, []);
 
-  const getUserPhotos = async () => {
+  const getUserPhotoData = async () => {
     const user = await Auth.currentAuthenticatedUser();
     const { data } = await API.graphql(graphqlOperation(ListPhotos, { username: user.username }));
     return await Promise.all(data.listPhotos.items.map(async(item) => {
@@ -33,8 +42,8 @@ export default function ShowPhotos() {
 
   return (
     <div>
-      { userPhotos.length > 0 ? 
-        <PhotoGrid photos={ userPhotos }/> : <span/>
+      { userPhotoData.length > 0 ?
+        <PhotoGrid photos={ userPhotoData }/> : <span/>
       } 
     </div>
   );

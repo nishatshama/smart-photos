@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 
 import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
@@ -8,17 +8,22 @@ import { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 import './App.css';
 import PhotoUpload from './Components/PhotoUpload';
 import ShowPhotos from './Components/ShowPhotos';
+import { initialState, reducer, AppContext } from './reducer/reducer';
 
 Amplify.configure(aws_exports);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
 
 function App() {
+  const [AppDataReducer, dispatch] = useReducer(reducer, initialState);
+
   return (
-    <div className="App">
-      <PhotoUpload/>
-      <ShowPhotos/>
-    </div>
+    <AppContext.Provider value={{ AppDataReducer, dispatch }}>
+      <div className="App">
+        <PhotoUpload />
+        <ShowPhotos />
+      </div>
+    </AppContext.Provider>
   );
 }
 
-export default withAuthenticator(App, {includeGreetings: true});
+export default withAuthenticator(App, { includeGreetings: true });
