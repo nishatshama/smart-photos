@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Auth, Storage, API, graphqlOperation } from 'aws-amplify';
 
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+
 import PhotoGrid from './PhotoGrid';
 import { AppContext } from '../reducer/reducer';
 import { SET_USER_PHOTO_DATA } from '../reducer/types';
@@ -43,7 +46,10 @@ export default function ShowPhotos() {
   return (
     <div>
       { userPhotoDataReceived ?
-        <PhotoGrid /> : <span/>
+        <span>
+          <Typography variant="h4" style={{ paddingLeft: '80px'}}>All Photos</Typography>
+          <PhotoGrid /> 
+        </span> : <span/>
       } 
     </div>
   );

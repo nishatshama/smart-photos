@@ -15,6 +15,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import logo from '../resources/logo.png';
 import PhotoUpload from './PhotoUpload';
+import Search from './Search';
 import { AppContext } from '../reducer/reducer';
 import { SET_SIDEBAR_VALUE } from '../reducer/types';
 
@@ -46,6 +47,8 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <img  src={logo} style={{ marginTop: '5px', marginBottom: '6px' }}/>
+      <Divider/>
+      <Search/>
       <Divider/>
       <PhotoUpload/>
       <List>

@@ -86,7 +86,7 @@ export default function PhotoUpload() {
   }
 
   return (
-    <div style={{ marginTop: '40px' }}>
+    <div style={{ marginTop: '18px' }}>
       <Input
         accept="image/*"
         id="raised-button-file"
