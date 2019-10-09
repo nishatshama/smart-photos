@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 
+import { AppContext } from '../reducer/reducer';
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -26,16 +28,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PhotoGrid(props) {
-  const [spacing, setSpacing] = React.useState(2);
+export default function PhotoGrid() {
   const classes = useStyles();
+  const { AppDataReducer } = React.useContext(AppContext);
 
   return (
     <div style={{ margin: '50px'}}>
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Grid container justify="center" spacing={spacing}>
-          {props.photos.map(value => (
+          <Grid container justify="center" spacing={2}>
+          {AppDataReducer.userPhotoData.map(value => (
             <Grid key={value.id} item>
               <Card
                 className={classes.card}>

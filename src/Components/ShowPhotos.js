@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Auth, Storage, API, graphqlOperation } from 'aws-amplify'
+import { Auth, Storage, API, graphqlOperation } from 'aws-amplify';
 
 import PhotoGrid from './PhotoGrid';
+import SectionContainer from './SectionContainer';
 import { AppContext } from '../reducer/reducer';
 import { SET_USER_PHOTO_DATA } from '../reducer/types';
 
@@ -19,14 +20,14 @@ const ListPhotos = `query ListPhotos($username: String!) {
 ;
 
 export default function ShowPhotos() {
-  const [userPhotoData, setUserPhotoData] = useState([]);
+  const [userPhotoDataReceived, setUserPhotoDataReceived] = useState(false);
   const { dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const getPhotos = async() => {
       const userPhotoData = await getUserPhotoData();
       dispatch({ type: SET_USER_PHOTO_DATA, userPhotoData: userPhotoData });
-      setUserPhotoData(userPhotoData);
+      setUserPhotoDataReceived(true);
     };
     getPhotos();
   }, []);
@@ -42,8 +43,11 @@ export default function ShowPhotos() {
 
   return (
     <div>
-      { userPhotoData.length > 0 ?
-        <PhotoGrid photos={ userPhotoData }/> : <span/>
+      { userPhotoDataReceived ?
+        <span>
+          <SectionContainer />
+          <PhotoGrid />
+        </span> : <span/>
       } 
     </div>
   );
