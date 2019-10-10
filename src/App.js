@@ -14,6 +14,7 @@ import { SET_USER_PHOTO_DATA } from './reducer/types';
 import SearchResult from './Components/SearchResult';
 import Scan from './Components/Scan';
 import { getUserPhotoData } from './utils';
+import Categories from './Components/Categories';
 
 Amplify.configure(aws_exports);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
@@ -57,7 +58,7 @@ function App() {
             }
             { AppDataReducer.sidebarValue === 'All Photos' ?
                 <ShowPhotos /> : (
-                  AppDataReducer.sidebarValue === 'Categories' ? <span/> : <Scan/>)
+                  AppDataReducer.sidebarValue === 'Categories' ? <Categories/> : <Scan/>)
             }
           </main> : <span/>
         }
