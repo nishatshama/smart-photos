@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 200,
   },
+  
 }));
 
 export default function PhotoCard(props) {
