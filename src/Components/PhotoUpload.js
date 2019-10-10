@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Auth, Storage, API, graphqlOperation, Predictions } from 'aws-amplify';
 import {v4 as uuid} from 'uuid';
 
@@ -8,6 +8,9 @@ import Button from '@material-ui/core/Button';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 
 import config from '../aws-exports';
+import { getUserPhotoData } from '../utils';
+import { AppContext } from '../reducer/reducer';
+import { SET_USER_PHOTO_DATA } from '../reducer/types';
 
 const {
   aws_user_files_s3_bucket_region: region,
@@ -35,9 +38,20 @@ const PutPhoto = `mutation PutPhoto($bucket: String!, $key: String!, $user: Stri
 ;
 
 export default function PhotoUpload() {
+  const { dispatch } = useContext(AppContext);
   const classes = useStyles();
   const [uploadStatus, setUploadStatus] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() =>{
+    const getPhotos = async() => {
+      const userPhotoData = await getUserPhotoData();
+      dispatch({ type: SET_USER_PHOTO_DATA, userPhotoData: userPhotoData });
+    };
+    if(uploadStatus === 'Upload Completed!') {
+      getPhotos();
+    }
+  }, [isUploading]);
 
   const uploadFile = async (file) => {
     const user = await Auth.currentAuthenticatedUser();
