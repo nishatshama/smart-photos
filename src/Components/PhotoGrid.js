@@ -23,9 +23,10 @@ export default function PhotoGrid(props) {
           <Grid item xs={12}>
             <Grid container justify="center" spacing={2}>
             {props.userPhotoData.map(value => (
-              <Grid key={value.id} item>
+              <Grid key={ value.id } item>
                 <PhotoCard
-                  image={value.s3}
+                  image={ value.s3 }
+                  safe={ value.safe }
                 />
               </Grid>
             ))}

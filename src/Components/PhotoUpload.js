@@ -74,6 +74,7 @@ export default function PhotoUpload() {
       }
     });
     
+    console.log(labels, unsafe);
     const { text } = await Predictions.identify({
       text: {
         source: {

@@ -25,7 +25,7 @@ export default function FolderList() {
           photoEntity.text !== null && photoEntity.text.length > 0).map(photoEntity => {
             return (
               <ListItem>
-                <PhotoCard image={photoEntity.s3} />
+                <PhotoCard image={ photoEntity.s3 } safe={ photoEntity.safe } />
                 <ListItemText style={{ margin: '20px', width: '10%' }} primary={photoEntity.text} />
               </ListItem>
             )
