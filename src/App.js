@@ -4,7 +4,6 @@ import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
 import { withAuthenticator } from 'aws-amplify-react';
 import { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
-import { Auth, Storage, API, graphqlOperation } from 'aws-amplify';
 
 import './App.css';
 import ShowPhotos from './Components/ShowPhotos';
@@ -14,22 +13,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { SET_USER_PHOTO_DATA } from './reducer/types';
 import SearchResult from './Components/SearchResult';
 import Scan from './Components/Scan';
+import { getUserPhotoData } from './utils';
 
 Amplify.configure(aws_exports);
 Amplify.addPluggable(new AmazonAIPredictionsProvider());
-
-const ListPhotos = `query ListPhotos($username: String!) {
-  listPhotos (limit: 1000, filter: {username: {eq: $username}}){
-    items {
-      id
-      key
-      labels
-      safe
-      text
-    }
-  }
-}`
-;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,15 +44,6 @@ function App() {
     };
     getPhotos();
   }, []);
-
-  const getUserPhotoData = async () => {
-    const user = await Auth.currentAuthenticatedUser();
-    const { data } = await API.graphql(graphqlOperation(ListPhotos, { username: user.username }));
-    return await Promise.all(data.listPhotos.items.map(async(item) => {
-      item.s3 = await Storage.get(item.key);
-      return item;
-    }));
-  }
 
   return (
     <AppContext.Provider value={{ AppDataReducer, dispatch }}>
