@@ -6,17 +6,25 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Box from '@material-ui/core/Box';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import IconButton from '@material-ui/core/IconButton';
 import Fab from '@material-ui/core/Fab';
-
-import Button from '@material-ui/core/Button';
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import IconButton from '@material-ui/core/IconButton';
 
-import useHover from './Hover';
-import DeletePhoto from './DeletePhoto'
+import { Storage, API, graphqlOperation } from 'aws-amplify';
+
+import { getUserPhotoData } from '../utils';
+import { AppContext } from '../reducer/reducer';
+import { SET_USER_PHOTO_DATA } from '../reducer/types';
+
+const DeleteItem = `mutation deletePost($name: ID!) {
+  deletePhoto( input:{id: $name }) {
+    id
+    key
+    labels
+    safe
+    text
+  }
+}`;
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -27,12 +35,8 @@ const useStyles = makeStyles(theme => ({
   },
   media: {
     height: 200,
-    
-    "&:hover": {
-        opacity: 0.4
-      }
   },
-  
+
   control: {
     flex: '1 0 auto'
   },
@@ -54,29 +58,44 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
   },
   overlaybuttons: {
-      position: 'absolute',
-      bottom: '0px',
-      right: '0px',
-      display: 'flex',
-      alignItems: 'center',
-   }
+    position: 'absolute',
+    bottom: '1px',
+    right: '0px',
+    alignItems: 'center',
+  }
 }));
+
 
 export default function PhotoCard(props) {
   const classes = useStyles();
+
+  const { dispatch } = React.useContext(AppContext);
+
   const [showUnsafe, setShowUnsafe] = React.useState(false);
   const [showHideUnsafe, setShowHideUnsafe] = React.useState(false);
+  const [showDownloadDelete, setShowDownloadDelete] = React.useState(false);
 
-  const [ref, hovered] = useHover();
-  
+  const DeletePhoto = async () => {
+    await Storage.remove(props.path)
+    const deleteresult = await API.graphql(graphqlOperation(DeleteItem, { name: props.id }));
+    const json = await deleteresult;
+    console.log(json);
+
+    const userPhotoData = await getUserPhotoData();
+    dispatch({ type: SET_USER_PHOTO_DATA, userPhotoData: userPhotoData });
+  }
+
   return (
 
     <Card
-      className={classes.card}>
+      className={classes.card}
+      onMouseOver={() => setShowDownloadDelete(true)}
+      onMouseLeave={() => setShowDownloadDelete(false)}
+    >
+
       <CardMedia
         className={classes.media}
         image={props.image}
-        ref = {ref}
       />
       {!props.safe ?
         !showUnsafe ?
@@ -109,18 +128,31 @@ export default function PhotoCard(props) {
             }
           </Box> : <span />
       }
-      <div className={classes.overlaybuttons} >
-        <a href={props.image}>
-          <IconButton aria-label="download" size="small" color = "primary" className={classes.margin}>
-            <ArrowDownwardIcon fontSize="small" />
-          </IconButton>
-        </a>
-        <IconButton color = "secondary" aria-label="delete" className={classes.margin} size="small"
-              onClick={() => { window.confirm("Are you sure you wish to delete?") && DeletePhoto(props) }}>
-          <DeleteIcon fontSize="small" />
-        </IconButton> 
-      </div>
-
+      {showDownloadDelete ?
+        <Box
+          className={classes.overlaybuttons}
+        >
+          <a href={props.image}>
+            <Fab
+              variant="extended"
+              size="small"
+              aria-label="add"
+              className={classes.margin}
+              style={{ marginRight: '5px', marginBottom: '5px' }}
+            >
+              <ArrowDownwardIcon fontSize="small" />
+            </Fab>
+          </a>
+          <Fab
+            variant="extended"
+            aria-label="delete"
+            className={classes.margin}
+            size="small"
+            style={{ marginRight: '2px', marginBottom: '5px' }}
+            onClick={() => { window.confirm("Are you sure you wish to delete?") && DeletePhoto() }}>
+            <DeleteIcon fontSize="small" />
+          </Fab>
+        </Box> : <span />}
     </Card>
   )
 }
