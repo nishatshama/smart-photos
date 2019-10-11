@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function PhotoGrid(props) {
   const classes = useStyles();
-
+  
+  
   return (
     <div style={{ margin: '50px'}}>
       { props.userPhotoData ? 
@@ -26,6 +27,8 @@ export default function PhotoGrid(props) {
               <Grid key={value.id} item>
                 <PhotoCard
                   image={value.s3}
+                  id = {value.id}
+                  path = {value.key}
                 />
               </Grid>
             ))}
@@ -35,4 +38,5 @@ export default function PhotoGrid(props) {
       }
     </div>
   );
+  
 }
