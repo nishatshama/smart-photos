@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     height: 200,
     
     "&:hover": {
-        opacity: 0.6
+        opacity: 0.4
       }
   },
   
@@ -32,8 +32,8 @@ const useStyles = makeStyles(theme => ({
   
   overlaybuttons: {
       position: 'absolute',
-      top: '2px',
-      right: '2px',
+      bottom: '0px',
+      right: '0px',
       display: 'flex',
       alignItems: 'center',
    }
@@ -54,13 +54,13 @@ export default function PhotoCard(props) {
       />
       <div className={classes.overlaybuttons} >
         <a href={props.image}>
-          <IconButton aria-label="download" className={classes.margin}>
-            <ArrowDownwardIcon fontSize="medium" />
+          <IconButton aria-label="download" size="small" color = "primary" className={classes.margin}>
+            <ArrowDownwardIcon fontSize="small" />
           </IconButton>
         </a>
-        <IconButton aria-label="delete" className={classes.margin} ref={ref} 
+        <IconButton color = "secondary" aria-label="delete" className={classes.margin} size="small"
               onClick={() => { window.confirm("Are you sure you wish to delete?") && DeletePhoto(props) }}>
-          <DeleteIcon fontSize="medium" />
+          <DeleteIcon fontSize="small" />
         </IconButton> 
       </div>
 
