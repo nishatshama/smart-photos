@@ -11,6 +11,13 @@ import Fab from '@material-ui/core/Fab';
 
 import Button from '@material-ui/core/Button';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import IconButton from '@material-ui/core/IconButton';
+
+import useHover from './Hover';
+import DeletePhoto from './DeletePhoto'
+
 const useStyles = makeStyles(theme => ({
   card: {
     width: 145,
@@ -20,6 +27,14 @@ const useStyles = makeStyles(theme => ({
   },
   media: {
     height: 200,
+    
+    "&:hover": {
+        opacity: 0.4
+      }
+  },
+  
+  control: {
+    flex: '1 0 auto'
   },
   overlay: {
     position: 'absolute',
@@ -37,7 +52,14 @@ const useStyles = makeStyles(theme => ({
     top: '0',
     left: '-2px',
     color: 'white',
-  }
+  },
+  overlaybuttons: {
+      position: 'absolute',
+      bottom: '0px',
+      right: '0px',
+      display: 'flex',
+      alignItems: 'center',
+   }
 }));
 
 export default function PhotoCard(props) {
@@ -45,12 +67,16 @@ export default function PhotoCard(props) {
   const [showUnsafe, setShowUnsafe] = React.useState(false);
   const [showHideUnsafe, setShowHideUnsafe] = React.useState(false);
 
+  const [ref, hovered] = useHover();
+  
   return (
+
     <Card
       className={classes.card}>
       <CardMedia
         className={classes.media}
         image={props.image}
+        ref = {ref}
       />
       {!props.safe ?
         !showUnsafe ?
@@ -83,6 +109,18 @@ export default function PhotoCard(props) {
             }
           </Box> : <span />
       }
+      <div className={classes.overlaybuttons} >
+        <a href={props.image}>
+          <IconButton aria-label="download" size="small" color = "primary" className={classes.margin}>
+            <ArrowDownwardIcon fontSize="small" />
+          </IconButton>
+        </a>
+        <IconButton color = "secondary" aria-label="delete" className={classes.margin} size="small"
+              onClick={() => { window.confirm("Are you sure you wish to delete?") && DeletePhoto(props) }}>
+          <DeleteIcon fontSize="small" />
+        </IconButton> 
+      </div>
+
     </Card>
   )
 }
