@@ -113,7 +113,7 @@ export default function PhotoUpload() {
       <Input
         accept="image/*"
         id="raised-button-file"
-        multiple
+        inputProps={{ multiple: true }}
         type="file"
         style={{ display: 'none' }}
         onChange={onChange}
