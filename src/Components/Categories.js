@@ -66,11 +66,13 @@ export default function Categories() {
         <Typography variant="h4" style={{ paddingLeft: '80px' }}>Photo Categories</Typography>
         {photosByCategory ?
           Object.keys(photosByCategory).map(key =>
-            <div style={{ marginTop: '40px', marginLeft: '80px' }}>
-              <Typography variant="h5" style={{ textTransform: 'capitalize' }}>{key}</Typography>
-              <Divider />
-              <PhotoGrid userPhotoData={photosByCategory[key]} />
-            </div>)
+            photosByCategory[key].length > 0 ?
+              <div style={{ marginTop: '40px', marginLeft: '80px' }}>
+                <Typography variant="h5" style={{ textTransform: 'capitalize' }}>{key}</Typography>
+                <Divider />
+                <PhotoGrid userPhotoData={photosByCategory[key]} />
+              </div>: <span/>
+          )
           : <span />
         }
       </span>
