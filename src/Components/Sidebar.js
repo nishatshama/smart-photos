@@ -46,13 +46,13 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <img  src={logo} style={{ marginTop: '5px', marginBottom: '6px' }}/>
+      <img  src={logo} style={{ marginTop: '5px', marginBottom: '6px' }}  onClick={() => dispatch({ type: SET_SIDEBAR_VALUE, sidebarValue: 'All Photos' })}/>
       <Divider/>
       <Search/>
       <Divider/>
       <PhotoUpload/>
       <List>
-        {['All Photos', 'Categories', 'Scan'].map((text, index) => (
+        {['All Photos', 'Categories', 'Text Scanner'].map((text, index) => (
           <ListItem button key={text} onClick={() => dispatch({ type: SET_SIDEBAR_VALUE, sidebarValue: text })}>
             <ListItemIcon>{index === 0 ? <WallpaperIcon /> : (index === 1? <CategoryIcon />: <ScannerIcon />)}</ListItemIcon>
             <ListItemText primary={text} />
