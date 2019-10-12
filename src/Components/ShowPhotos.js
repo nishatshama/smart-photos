@@ -7,7 +7,7 @@ import { AppContext } from '../reducer/reducer';
 
 export default function ShowPhotos() {
   const { AppDataReducer } = useContext(AppContext);
-
+  console.log(AppDataReducer.userPhotoData);
   return (
     <div>
       <span>
